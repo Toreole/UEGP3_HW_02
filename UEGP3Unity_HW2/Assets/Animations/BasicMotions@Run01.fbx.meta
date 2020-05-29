@@ -200,16 +200,18 @@ ModelImporter:
       curves: []
       events:
       - time: 0.106571935
-        functionName: DoFootStepSound
+        functionName: PlaySound
         data: 
-        objectReferenceParameter: {instanceID: 0}
+        objectReferenceParameter: {fileID: 11400000, guid: c36572c1804b1f54593b80d6f03cb046,
+          type: 2}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.5950266
-        functionName: DoFootStepSound
+        functionName: PlaySound
         data: 
-        objectReferenceParameter: {instanceID: 0}
+        objectReferenceParameter: {fileID: 11400000, guid: c36572c1804b1f54593b80d6f03cb046,
+          type: 2}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0

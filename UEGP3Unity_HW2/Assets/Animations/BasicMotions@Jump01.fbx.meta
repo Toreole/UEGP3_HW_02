@@ -353,9 +353,10 @@ ModelImporter:
       curves: []
       events:
       - time: 0.04240026
-        functionName: PlayJumpSound
+        functionName: PlaySound
         data: 
-        objectReferenceParameter: {instanceID: 0}
+        objectReferenceParameter: {fileID: 11400000, guid: e2fb59d146a8e9947a9f816069a37132,
+          type: 2}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
@@ -472,9 +473,10 @@ ModelImporter:
       curves: []
       events:
       - time: 0.23805477
-        functionName: PlayLandSound
+        functionName: PlaySound
         data: 
-        objectReferenceParameter: {instanceID: 0}
+        objectReferenceParameter: {fileID: 11400000, guid: 59ced38c1eca2c5438d24a14441a2e56,
+          type: 2}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0

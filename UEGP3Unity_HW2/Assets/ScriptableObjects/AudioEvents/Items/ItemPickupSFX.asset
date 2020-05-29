@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05afd142c2754e95af5861804a5e2f60, type: 3}
+  m_Name: ItemPickupSFX
+  m_EditorClassIdentifier: 
+  _clips:
+  - {fileID: 8300000, guid: a6a543747dc847d4f9da2248c9eb21c2, type: 3}
+  - {fileID: 8300000, guid: ce95c727e730d2e4696990d458f6e662, type: 3}
+  - {fileID: 8300000, guid: c7c558cf6e175744ab1509a881a8f9c6, type: 3}
+  _randomizeVolume: 0
+  _volume: 0.14
+  _minVolume: 0.25
+  _maxVolume: 0.4
+  _randomizePitch: 0
+  _pitch: 1
+  _minPitch: 0.34
+  _maxPitch: 1.37

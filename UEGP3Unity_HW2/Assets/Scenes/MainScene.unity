@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1441,6 +1441,18 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.034
       objectReference: {fileID: 0}
+    - target: {fileID: 7911695535493051866, guid: c8c5f6a5eb2576c4a9e021b71867496f,
+        type: 3}
+      propertyPath: landSound
+      value: 
+      objectReference: {fileID: 11400000, guid: 59ced38c1eca2c5438d24a14441a2e56,
+        type: 2}
+    - target: {fileID: 7911695535493051866, guid: c8c5f6a5eb2576c4a9e021b71867496f,
+        type: 3}
+      propertyPath: jumpSound
+      value: 
+      objectReference: {fileID: 11400000, guid: e2fb59d146a8e9947a9f816069a37132,
+        type: 2}
     - target: {fileID: 9051706688429314664, guid: c8c5f6a5eb2576c4a9e021b71867496f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2722,6 +2734,18 @@ Transform:
   m_Father: {fileID: 2017866272}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 60.000004, z: 0}
+--- !u!114 &995477239 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 839982847, guid: c8c5f6a5eb2576c4a9e021b71867496f,
+    type: 3}
+  m_PrefabInstance: {fileID: 371308082}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3e9b9736c214144989a0342a0fff687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1119294269
 GameObject:
   m_ObjectHideFlags: 0
@@ -4639,6 +4663,11 @@ PrefabInstance:
       propertyPath: _lockCursor
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7332092357814561431, guid: c3ccbb3c8456ca146ba9b748532fd686,
+        type: 3}
+      propertyPath: _playerController
+      value: 
+      objectReference: {fileID: 995477239}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3ccbb3c8456ca146ba9b748532fd686, type: 3}
 --- !u!320 &8528566471664065144
@@ -4756,4 +4785,4 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0

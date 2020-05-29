@@ -51,8 +51,15 @@ namespace UEGP3.PlayerSystem
 		private float _speedSmoothVelocity;
 		private CharacterController _characterController;
 		private PlayerAnimationHandler _playerAnimationHandler;
-		
-		private void Awake()
+
+        //Input cache
+        float horizontalInput;
+        float verticalInput;
+        bool jumpDown;
+        bool isSprinting;
+        bool isDashing;
+
+        private void Awake()
 		{
 			_characterController = GetComponent<CharacterController>();
 			_playerAnimationHandler = GetComponent<PlayerAnimationHandler>();
@@ -60,69 +67,88 @@ namespace UEGP3.PlayerSystem
 
 		private void Update()
 		{
-			// Fetch inputs
-			// GetAxisRaw : -1, +1 (0) 
-			// GetAxis: [-1, +1]
-			float horizontalInput = Input.GetAxisRaw("Horizontal");
-			float verticalInput = Input.GetAxisRaw("Vertical");
-			bool jumpDown = Input.GetButtonDown("Jump");
-			bool isSprinting = Input.GetButton("Sprint");
-			bool isDashing = Input.GetButtonDown("Dash");
-
-			// Calculate a direction from input data 
-			Vector3 direction = new Vector3(horizontalInput, 0, verticalInput).normalized;
-			
-			// If the player has given any input, adjust the character rotation
-			if (direction != Vector3.zero)
-			{
-				float lookRotationAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + _cameraTransform.eulerAngles.y;
-				Quaternion targetRotation = Quaternion.Euler(0, lookRotationAngle, 0);
-				_graphicsObject.rotation = Quaternion.Slerp(_graphicsObject.rotation, targetRotation, GetSmoothTimeAfterAirControl(_turnSmoothTime, false));
-			}
-
-			// Calculate velocity based on gravity formula: delta-y = 1/2 * g * t^2
-			// We ignore the 1/2 to safe multiplications and because it feels better.
-			// Second Time.deltaTime is done in controller.Move()-call so we save one multiplication here.
-			_currentVerticalVelocity += Physics.gravity.y * _gravityModifier * Time.deltaTime;
-			
-			// Clamp velocity to reach no more than our defined terminal velocity
-			_currentVerticalVelocity = Mathf.Clamp(_currentVerticalVelocity, -_terminalVelocity, JumpVelocity);
-
-			// Calculate velocity vector based on gravity and speed
-			// (0, 0, z) -> (0, y, z)
-			float targetSpeed = (isSprinting ? _sprintSpeed : _movementSpeed) * direction.magnitude;
-			_currentForwardVelocity = Mathf.SmoothDamp(_currentForwardVelocity, targetSpeed, ref _speedSmoothVelocity, GetSmoothTimeAfterAirControl(_speedSmoothTime, true));
-			// If dash was pressed, dash. If we don't want to allow dash while air-borne, ask if grounded.
-			if (isDashing)
-			{
-				// Either set velocity = DashVelocity or add it. Both gives a nice small dash effect.
-				_currentForwardVelocity += DashVelocity;
-			}
-			Vector3 velocity = _graphicsObject.forward * _currentForwardVelocity + Vector3.up * _currentVerticalVelocity;
-			
-			// Use the direction to move the character controller
-			// direction.x * Time.deltaTime, direction.y * Time.deltaTime, ... -> resultingDirection.x * _movementSpeed
-			// Time.deltaTime * _movementSpeed = res, res * direction.x, res * direction.y, ...
-			_characterController.Move(velocity * Time.deltaTime);
-			
-			// Check if we are grounded, if so reset gravity
-			_isGrounded = Physics.CheckSphere(_groundCheckTransform.position, _groundCheckRadius, _groundCheckLayerMask);
-			_playerAnimationHandler.SetGrounded(_isGrounded);
-			if (_isGrounded)
-			{
-				// Reset current vertical velocity
-				_currentVerticalVelocity = 0f;
-			}
-
-			// If we are grounded and jump was pressed, jump
-			if (_isGrounded && jumpDown)
-			{
-				_playerAnimationHandler.DoJump();
-				_currentVerticalVelocity = JumpVelocity;
-			}
-
-			_playerAnimationHandler.SetSpeeds(_currentForwardVelocity, _currentVerticalVelocity);
+            FetchInput();
+            Move();
 		}
+
+        void FetchInput()
+        {
+            // Fetch inputs
+            // GetAxisRaw : -1, +1 (0) 
+            // GetAxis: [-1, +1]
+            horizontalInput = Input.GetAxisRaw("Horizontal");
+            verticalInput = Input.GetAxisRaw("Vertical");
+            jumpDown = Input.GetButtonDown("Jump");
+            isSprinting = Input.GetButton("Sprint");
+            isDashing = Input.GetButtonDown("Dash");
+        }
+
+        void Move()
+        {
+            // Calculate a direction from input data 
+            Vector3 direction = new Vector3(horizontalInput, 0, verticalInput).normalized;
+
+            // If the player has given any input, adjust the character rotation
+            if (direction != Vector3.zero)
+            {
+                float lookRotationAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + _cameraTransform.eulerAngles.y;
+                Quaternion targetRotation = Quaternion.Euler(0, lookRotationAngle, 0);
+                _graphicsObject.rotation = Quaternion.Slerp(_graphicsObject.rotation, targetRotation, GetSmoothTimeAfterAirControl(_turnSmoothTime, false));
+            }
+
+            //x Calculate velocity based on gravity formula: delta-y = 1/2 * g * t^2
+            //x We ignore the 1/2 to safe multiplications and because it feels better.
+            //! inaccurate: it's a formula for accelerated movement and it specifies that the starting velocity is 0.
+            //! s(t) = 1/2 * g * t^2 
+            //sidenote: the general formula for gravity (as a force) is: F = G * (m1 * m2) / r^2 ;
+            //reference: https://www.leifiphysik.de/mechanik/gravitationsgesetz-und-feld 
+            //this is way too complex for this very simple scenario. we dont want to accurately simulate space in this project.
+
+            //! we are using a two-step process; accelerating, then translating.
+            //! v(dt) = v(0) + a * dt;
+            //! s(dt) = s(0) + v * dt;
+
+            //accelerate on the vertical axis.
+            _currentVerticalVelocity += Physics.gravity.y * _gravityModifier * Time.deltaTime;
+
+            // Clamp velocity to reach no more than our defined terminal velocity
+            _currentVerticalVelocity = Mathf.Clamp(_currentVerticalVelocity, -_terminalVelocity, JumpVelocity);
+
+            // Calculate velocity vector based on gravity and speed
+            // (0, 0, z) -> (0, y, z)
+            float targetSpeed = (isSprinting ? _sprintSpeed : _movementSpeed) * direction.magnitude;
+            _currentForwardVelocity = Mathf.SmoothDamp(_currentForwardVelocity, targetSpeed, ref _speedSmoothVelocity, GetSmoothTimeAfterAirControl(_speedSmoothTime, true));
+            // If dash was pressed, dash. If we don't want to allow dash while air-borne, ask if grounded.
+            if (isDashing)
+            {
+                // Either set velocity = DashVelocity or add it. Both gives a nice small dash effect.
+                _currentForwardVelocity += DashVelocity;
+            }
+            Vector3 velocity = _graphicsObject.forward * _currentForwardVelocity + Vector3.up * _currentVerticalVelocity;
+
+            // Use the direction to move the character controller
+            // direction.x * Time.deltaTime, direction.y * Time.deltaTime, ... -> resultingDirection.x * _movementSpeed
+            // Time.deltaTime * _movementSpeed = res, res * direction.x, res * direction.y, ...
+            _characterController.Move(velocity * Time.deltaTime);
+
+            // Check if we are grounded, if so reset gravity
+            _isGrounded = Physics.CheckSphere(_groundCheckTransform.position, _groundCheckRadius, _groundCheckLayerMask);
+            _playerAnimationHandler.SetGrounded(_isGrounded);
+            if (_isGrounded)
+            {
+                // Reset current vertical velocity
+                _currentVerticalVelocity = 0f;
+            }
+
+            // If we are grounded and jump was pressed, jump
+            if (_isGrounded && jumpDown)
+            {
+                _playerAnimationHandler.DoJump();
+                _currentVerticalVelocity = JumpVelocity;
+            }
+
+            _playerAnimationHandler.SetSpeeds(_currentForwardVelocity, _currentVerticalVelocity);
+        }
 
 		/// <summary>
 		/// Calculates the smoothTime based on airControl.

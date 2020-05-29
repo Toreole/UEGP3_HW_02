@@ -106,7 +106,7 @@ namespace UEGP3.InventorySystem
 		/// Uses the item if its available.
 		/// </summary>
 		/// <param name="item">The item to use</param>
-		public void UseItem(Item item)
+		public void UseItem(Item item, AudioSource audioSource = null)
 		{
 			// Item can only be used if it is in the inventory
 			if (!_inventoryItems.ContainsKey(item))
@@ -115,7 +115,7 @@ namespace UEGP3.InventorySystem
 			}
 			
 			// Use the item
-			item.UseItem();
+			item.UseItem(audioSource);
 		}
 
 		/// <summary>

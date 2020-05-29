@@ -7,9 +7,9 @@ namespace UEGP3.InventorySystem
 	{
 		[SerializeField] private float _restoredHealth = 5.0f;
 		
-		public override void UseItem()
+		public override void UseItem(AudioSource audio)
 		{
-			base.UseItem();
+			base.UseItem(audio);
 			Debug.Log($"Healing by {_restoredHealth}");
 		}
 	}

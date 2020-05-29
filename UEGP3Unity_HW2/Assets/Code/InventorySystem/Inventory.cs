@@ -99,7 +99,7 @@ namespace UEGP3.InventorySystem
 			return success;
 		}
 		
-		public void UseQuickAccessItem()
+		public void UseQuickAccessItem(AudioSource audioSource = null)
 		{
 			// only execute if quick access holds an item
 			if (_quickAccesItem == null)
@@ -113,9 +113,9 @@ namespace UEGP3.InventorySystem
 			{
 				return;
 			}
-			
-			// Use item
-			bagThatContainsItem.UseItem(_quickAccesItem);
+
+            // Use item
+            bagThatContainsItem.UseItem(_quickAccesItem, audioSource);
 		}
 
 		private ItemBag FindBagWithItem(Item itemToSearchFor)

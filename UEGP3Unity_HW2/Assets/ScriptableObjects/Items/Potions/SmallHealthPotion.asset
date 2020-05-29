@@ -19,4 +19,5 @@ MonoBehaviour:
   _isUnique: 0
   _itemMesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   _itemType: {fileID: 11400000, guid: 54d10352911fe2a44a1a4278ed71a578, type: 2}
+  useSound: {fileID: 11400000, guid: f873342a68657ac448e72e7eb13eb1d1, type: 2}
   _restoredHealth: 5

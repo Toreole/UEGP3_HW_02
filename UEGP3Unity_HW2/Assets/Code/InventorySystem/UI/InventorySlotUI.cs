@@ -33,7 +33,7 @@ namespace UEGP3.InventorySystem.UI
 		{
 			// Add onclick event to use the stored item
 			_button = GetComponentInChildren<Button>();
-			_button.onClick.AddListener(UseItem);
+            _button.onClick.AddListener(() => UseItem());
 			
 			// always reset current item count on awake
 			_count = 0;
@@ -140,11 +140,11 @@ namespace UEGP3.InventorySystem.UI
 			}
 		}
 
-		private void UseItem()
+		private void UseItem(AudioSource source = null)
 		{
 			// only use the item if not null
 			if (_item != null)
-				_item.UseItem();
+				_item.UseItem(source);
 		}
 
 		public void OnPointerEnter(PointerEventData eventData)

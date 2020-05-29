@@ -11,6 +11,8 @@ namespace UEGP3.PlayerSystem
 	{
 		[Tooltip("Inventory to be used for the player")] [SerializeField] 
 		private Inventory _playerInventory;
+        [SerializeField]
+        private AudioSource soundEffectSource;
 
 		private void Awake()
 		{
@@ -34,7 +36,7 @@ namespace UEGP3.PlayerSystem
 
 			if (Input.GetButtonDown("ItemQuickAccess"))
 			{
-				_playerInventory.UseQuickAccessItem();
+				_playerInventory.UseQuickAccessItem(audioSource: soundEffectSource);
 			}
 		}
 

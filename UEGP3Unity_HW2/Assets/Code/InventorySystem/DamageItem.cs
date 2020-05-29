@@ -7,9 +7,9 @@ namespace UEGP3.InventorySystem
 	{
 		[SerializeField] private float _damage = 5.0f;
 		
-		public override void UseItem()
+		public override void UseItem(AudioSource audio)
 		{
-			base.UseItem();
+			base.UseItem(audio);
 			Debug.Log($"Inflict {_damage} damage!");
 		}
 	}

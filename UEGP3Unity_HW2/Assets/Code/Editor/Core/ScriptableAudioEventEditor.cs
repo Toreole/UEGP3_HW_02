@@ -14,14 +14,13 @@ namespace UEGP3.Code.Editor.Core
 
         private SerializedProperty _randomizeVolumeProperty;
         private SerializedProperty _volumeProperty;
-        private SerializedProperty _minVolumeProperty;
-        private SerializedProperty _maxVolumeProperty;
+        private SerializedProperty minMaxVolumeProperty;
         
         private SerializedProperty _randomizePitchProperty;
         private SerializedProperty _pitchProperty;
-        private SerializedProperty _minPitchProperty;
-        private SerializedProperty _maxPitchProperty;
-        
+        private SerializedProperty minMaxPitchProperty;
+
+
         private void OnEnable()
         {
             // Create an invisible and not saved Audio Source which will be used only for previewing.
@@ -31,13 +30,11 @@ namespace UEGP3.Code.Editor.Core
 
             _randomizeVolumeProperty = serializedObject.FindProperty("_randomizeVolume");
             _volumeProperty = serializedObject.FindProperty("_volume");
-            _minVolumeProperty = serializedObject.FindProperty("_minVolume");
-            _maxVolumeProperty = serializedObject.FindProperty("_maxVolume");
+            minMaxVolumeProperty = serializedObject.FindProperty("minMaxVolume");
 
             _randomizePitchProperty = serializedObject.FindProperty("_randomizePitch");
             _pitchProperty = serializedObject.FindProperty("_pitch");
-            _minPitchProperty = serializedObject.FindProperty("_minPitch");
-            _maxPitchProperty = serializedObject.FindProperty("_maxPitch");
+            minMaxPitchProperty = serializedObject.FindProperty("minMaxPitch");
         }
 
         private void OnDisable()
@@ -57,8 +54,7 @@ namespace UEGP3.Code.Editor.Core
             EditorGUILayout.PropertyField(_randomizeVolumeProperty);
             if (scriptableAudioEvent.RandomizeVolume)
             {
-                EditorGUILayout.PropertyField(_minVolumeProperty);
-                EditorGUILayout.PropertyField(_maxVolumeProperty);
+                EditorGUILayout.PropertyField(minMaxVolumeProperty);
             }
             else
             {
@@ -68,8 +64,7 @@ namespace UEGP3.Code.Editor.Core
             EditorGUILayout.PropertyField(_randomizePitchProperty);
             if (scriptableAudioEvent.RandomizePitch)
             {
-                EditorGUILayout.PropertyField(_minPitchProperty);
-                EditorGUILayout.PropertyField(_maxPitchProperty);
+                EditorGUILayout.PropertyField(minMaxPitchProperty);
             }
             else
             {

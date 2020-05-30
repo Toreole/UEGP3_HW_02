@@ -19,9 +19,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e9714160ce34f2b4ab63ff8c27bd68e1, type: 3}
   _randomizeVolume: 1
   _volume: 0
-  _minVolume: 0.15
-  _maxVolume: 0.3
+  minMaxVolume:
+    min: 0.40885913
+    max: 1.0396247
   _randomizePitch: 1
   _pitch: 0
-  _minPitch: 0.9
-  _maxPitch: 1.1
+  minMaxPitch:
+    min: 0.8227421
+    max: 0.9821116

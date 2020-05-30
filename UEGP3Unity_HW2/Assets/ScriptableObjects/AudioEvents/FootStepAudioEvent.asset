@@ -25,5 +25,5 @@ MonoBehaviour:
   _randomizePitch: 1
   _pitch: 0
   minMaxPitch:
-    min: 0.8227421
-    max: 0.9821116
+    min: 0.86027026
+    max: 1.0196397

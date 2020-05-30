@@ -69,7 +69,7 @@ namespace UEGP3.InventorySystem
 		public virtual void UseItem(AudioSource audioSource)
 		{
 			OnItemUsed?.Invoke(this);
-            if (audioSource)
+            if (audioSource && useSound)
                 useSound.Play(audioSource);
 
 

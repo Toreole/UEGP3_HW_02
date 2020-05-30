@@ -20,6 +20,8 @@ namespace UEGP3.InventorySystem.UI
 		private Button _bagButtonPrefab;
 		[Tooltip("Parent transform that holds all the bag buttons")] [SerializeField]
 		private RectTransform _bagButtonHolder = default;
+        [SerializeField]
+        private AudioSource inventoryAudioSource;
 
 		// Reference to all used ui bags
 		private List<InventoryBagUI> _inventoryBags = new List<InventoryBagUI>();
@@ -27,7 +29,7 @@ namespace UEGP3.InventorySystem.UI
 		private int _lastOpenBagIndex;
 		// the displayed inventory
 		private Inventory _inventory;
-
+        
 		private void Awake()
 		{
 			// React to slot hovered event
@@ -86,7 +88,7 @@ namespace UEGP3.InventorySystem.UI
 			foreach (ItemBag itemBag in _inventory.Bags)
 			{
 				InventoryBagUI bagUI = InstantiateBagUI(itemBag);
-				InstantiateBagButton(bagUI);
+                InstantiateBagButton(bagUI);
 			}
 		}
 
@@ -95,9 +97,12 @@ namespace UEGP3.InventorySystem.UI
 			// Spawn the InventoryBagUI resembling the given bag, set its name to the name of the bag so we can identify it
 			InventoryBagUI bagUI = Instantiate(_bagUIPrefab, _bagHolder);
 			bagUI.name = itemBag.BagName;
-			
-			// Add bag to list of all bags
-			_inventoryBags.Add(bagUI);
+
+            //set up audio source.
+            bagUI.InventoryAudioSource = this.inventoryAudioSource;
+
+            // Add bag to list of all bags
+            _inventoryBags.Add(bagUI);
 			
 			// configure bag initially
 			bagUI.SetupForBag(itemBag);

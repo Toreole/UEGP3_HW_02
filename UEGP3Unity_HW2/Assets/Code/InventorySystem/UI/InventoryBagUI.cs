@@ -21,6 +21,8 @@ namespace UEGP3.InventorySystem.UI
 		// canvas group used to enable/disable the bag
 		private CanvasGroup _canvasGroup;
 
+        public AudioSource InventoryAudioSource { get; set; }
+
 		private void Awake()
 		{
 			_canvasGroup = GetComponent<CanvasGroup>();
@@ -76,6 +78,7 @@ namespace UEGP3.InventorySystem.UI
 			{
 				InventorySlotUI uiSlot = Instantiate(_inventorySlotUIPrefab, _slotHolder);
 				uiSlot.ShowEmptyItem();
+                uiSlot.InventoryAudioSource = this.InventoryAudioSource;
 				_inventorySlots.Add(uiSlot);
 			}
 		}

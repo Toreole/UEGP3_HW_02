@@ -25,6 +25,8 @@ namespace UEGP3.InventorySystem.UI
 		[Tooltip("Displays how many of the given item are in this slot")] [SerializeField]
 		private TextMeshProUGUI _itemCount = default;
 
+        public AudioSource InventoryAudioSource { get; set; }
+
 		private Button _button;
 		private Item _item;
 		private int _count;
@@ -33,7 +35,7 @@ namespace UEGP3.InventorySystem.UI
 		{
 			// Add onclick event to use the stored item
 			_button = GetComponentInChildren<Button>();
-            _button.onClick.AddListener(() => UseItem());
+            _button.onClick.AddListener(() => UseItem(InventoryAudioSource));
 			
 			// always reset current item count on awake
 			_count = 0;
@@ -140,7 +142,7 @@ namespace UEGP3.InventorySystem.UI
 			}
 		}
 
-		private void UseItem(AudioSource source = null)
+		private void UseItem(AudioSource source)
 		{
 			// only use the item if not null
 			if (_item != null)

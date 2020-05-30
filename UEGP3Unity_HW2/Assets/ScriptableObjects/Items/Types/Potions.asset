@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5040ea497644e778bb0872282e8c438, type: 3}
   m_Name: Potions
   m_EditorClassIdentifier: 
+  fallbackUseSound: {fileID: 11400000, guid: 84667c511d411f74ab162d3d8b5a0d63, type: 2}

@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5040ea497644e778bb0872282e8c438, type: 3}
   m_Name: Key Items
   m_EditorClassIdentifier: 
+  fallbackUseSound: {fileID: 11400000, guid: 9dff40c4c5181914fba54473dde7e7fe, type: 2}

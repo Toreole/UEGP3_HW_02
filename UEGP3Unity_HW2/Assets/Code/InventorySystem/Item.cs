@@ -69,10 +69,20 @@ namespace UEGP3.InventorySystem
 		public virtual void UseItem(AudioSource audioSource)
 		{
 			OnItemUsed?.Invoke(this);
-            if (audioSource && useSound)
-                useSound.Play(audioSource);
-
-
+            //if there is an audio source, try playing a sound.
+            if (audioSource)
+            {
+                //attempt using the unique sound.
+                if (useSound)
+                {
+                    useSound.Play(audioSource);
+                    return;
+                }
+                //otherwise try using the item type's fallback use sound.
+                var audio = _itemType.FallbackUseSound;
+                if (audio)
+                    audio.Play(audioSource);
+            }
         }
 	}
 }

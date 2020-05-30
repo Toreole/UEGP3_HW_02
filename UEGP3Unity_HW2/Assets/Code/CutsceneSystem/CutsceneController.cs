@@ -16,6 +16,9 @@ namespace UEGP3.CutsceneSystem
 		[Tooltip("A Pause UI shown to the user when the Timeline Instance is being paused")] [SerializeField]
 		private CanvasGroup _pauseScreenCanvasGroup = default;
 
+        [SerializeField]
+        private int skipAccuracy = 10;
+
 		// is this controller currently active?
 		private bool _isActive;
 		// store paused state
@@ -103,8 +106,12 @@ namespace UEGP3.CutsceneSystem
 		/// </summary>
 		public void Skip()
 		{
-			_playableDirector.time = _playableDirector.duration;
-			_playableDirector.Stop();
-		}
+            for(int i = 0; i < skipAccuracy; i++)
+            {
+                _playableDirector.time = _playableDirector.duration * (double)i / (double)skipAccuracy;
+                _playableDirector.Evaluate();
+            }
+
+        }
 	}
 }

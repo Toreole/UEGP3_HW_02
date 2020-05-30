@@ -14,6 +14,8 @@ namespace UEGP3.PlayerSystem
 		private Transform _graphicsObject = null;
 		[Tooltip("Reference to the game camera")] [SerializeField]
 		private Transform _cameraTransform = null;
+        [SerializeField]
+        private CameraSystem.ThirdPersonFreeLookCamera freeLookCamera = null;
 
 		[Header("Movement")] [Tooltip("Smoothing time for turns")] [SerializeField]
 		private float _turnSmoothTime = 0.15f;
@@ -52,6 +54,18 @@ namespace UEGP3.PlayerSystem
 		private CharacterController _characterController;
 		private PlayerAnimationHandler _playerAnimationHandler;
 
+        //for blocking input on player and camera.
+        private bool receiveInput = true;
+        public bool ReceiveInput
+        {
+            get => receiveInput;
+            set
+            {
+                receiveInput = value;
+                freeLookCamera.ReceiveInput = value;
+            }
+        }
+
         //Input cache
         float horizontalInput;
         float verticalInput;
@@ -67,6 +81,9 @@ namespace UEGP3.PlayerSystem
 
 		private void Update()
 		{
+            if (!ReceiveInput)
+                return;
+
             FetchInput();
             Move();
 		}

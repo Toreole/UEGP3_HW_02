@@ -1254,6 +1254,8 @@ PlayableDirector:
     value: {fileID: 829495298}
   - key: {fileID: 114853098016151520, guid: 1bd40f15eb54eca4291184314a9696c9, type: 2}
     value: {fileID: 0}
+  - key: {fileID: 114930008748008840, guid: 1bd40f15eb54eca4291184314a9696c9, type: 2}
+    value: {fileID: 995477239}
   m_ExposedReferences:
     m_References:
     - 37a1672e3fbe7354a8233878a205bbe3: {fileID: 1242359912}
@@ -1477,6 +1479,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 839982847, guid: c8c5f6a5eb2576c4a9e021b71867496f, type: 3}
+      propertyPath: freeLookCamera
+      value: 
+      objectReference: {fileID: 1869806554}
     - target: {fileID: 2019451242, guid: c8c5f6a5eb2576c4a9e021b71867496f, type: 3}
       propertyPath: m_LocalPosition.y
       value: 1.63
@@ -4419,6 +4425,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3efe59d08f84f2440925da906d62e004, type: 3}
+--- !u!114 &1869806554 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7332092357814561431, guid: c3ccbb3c8456ca146ba9b748532fd686,
+    type: 3}
+  m_PrefabInstance: {fileID: 7332092357283332293}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9857cb690494e54aa880d31c347afcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1900232002
 PrefabInstance:
   m_ObjectHideFlags: 0

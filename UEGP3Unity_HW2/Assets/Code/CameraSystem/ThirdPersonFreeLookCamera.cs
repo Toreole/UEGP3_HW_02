@@ -68,6 +68,9 @@ namespace UEGP3.CameraSystem
 	
 		// Is the camera currently resetting?
 		private bool _isResetting;
+
+        //for disabling the input.
+        public bool ReceiveInput { get; set; } = true;
 		
 		private void Awake()
 		{
@@ -97,8 +100,8 @@ namespace UEGP3.CameraSystem
 			// Check if the cursor was enabled/disabled in the inspector
 			EditorCheckLockCursor();
 #endif
-			// Do not take any input into account, if camera is currently resetting
-			if (_isResetting)
+			// Do not take any input into account, if camera is currently resetting or isnt allowed to receive input.
+			if (_isResetting || !ReceiveInput)
 			{
 				return;
 			}

@@ -106,6 +106,9 @@ namespace UEGP3.CutsceneSystem
 		/// </summary>
 		public void Skip()
 		{
+			// TODO
+			// The idea behind simply sampling the timeline is good and it also works oftentimes but we can easily end up with situations where
+			// (depending on the sampling step size) we skip over certain clips and do not evaluate them correctly.
             for(int i = 0; i < skipAccuracy; i++)
             {
                 _playableDirector.time = _playableDirector.duration * (double)i / (double)skipAccuracy;

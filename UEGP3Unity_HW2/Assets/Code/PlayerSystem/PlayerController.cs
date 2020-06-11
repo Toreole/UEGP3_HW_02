@@ -62,6 +62,9 @@ namespace UEGP3.PlayerSystem
             set
             {
                 receiveInput = value;
+                // TODO
+                // this is fine but we could also avoid the circular dependency between playerController <-> ThirdPersonFreeLookCamera by this if the Camera was using
+                // PlayerController.ReceiveInput instead. The already has public read access and the camera script has access to the player, so we can use it there too.
                 freeLookCamera.ReceiveInput = value;
             }
         }

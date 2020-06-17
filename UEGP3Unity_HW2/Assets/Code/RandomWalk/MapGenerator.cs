@@ -9,13 +9,13 @@ namespace UEGP3.RandomWalk
     {
         [SerializeField]
         Vector2Int gridSize;
-        [SerializeField]
+        [SerializeField, Range(0.01f, 0.99f)]
         float targetPercentFill;
         [SerializeField]
         GameObject tilePrefab;
-        [SerializeField, Range(0.01f, 0.99f)]
+        [SerializeField]
         Transform tileHolder;
-        [SerializeField, Range(1, 1000)]
+        [SerializeField, Range(1, 10000)]
         protected float generationFrameRate = 60;
         [SerializeField]
         protected Color activeColor, inactiveColor;
@@ -25,11 +25,17 @@ namespace UEGP3.RandomWalk
         protected bool useCustomSeed = false;
         [SerializeField]
         protected int seed;
+        [SerializeField]
+        protected bool fillHoles = false;
+        [SerializeField]
+        protected CheckType checkType = CheckType.Full8Directional;
 
         int filledTiles = 0;
         Vector2Int tPosition;
         Tile[,] grid;
         int totalTiles;
+
+        public bool IsDone => filledTiles >= totalTiles * targetPercentFill;
 
         private void Start() 
         {
@@ -72,7 +78,7 @@ namespace UEGP3.RandomWalk
             //initialize player position
             tPosition = new Vector2Int(rng.Next(0,gridSize.x), rng.Next(0, gridSize.y));
             float simulationTime = Time.time;
-            while(filledTiles < totalTiles * targetPercentFill)
+            while(!IsDone)
             {
                 //update last tile.
                 var tile = grid[tPosition.x, tPosition.y];
@@ -102,6 +108,130 @@ namespace UEGP3.RandomWalk
                 if(simulationTime > Time.time)
                     yield return new WaitUntil(() => simulationTime < Time.time);
             }
+            if(fillHoles)
+                FillHoles(GetEvaluator());
+        }
+
+        //Fills all 1x1 holes in the generation, looks very smooth.
+        #if UNITY_EDITOR
+        public void FillHoles(System.Func<int, int, bool> evaluator)
+        #else
+        void FillHoles(System.Func<int, int, bool> evaluator)
+        #endif
+        {
+            //iterate over the entire grid.
+            for(int x = 0; x < gridSize.x; x++)
+            {
+                for(int y = 0; y < gridSize.y; y++)
+                {
+                    if(!grid[x, y].State)
+                    {
+                        //check whether this is a 1x1 hole or not.
+                        if(evaluator(x , y))
+                        {
+                            //Debug.Log($"Filled hole at {x}, {y}");
+                            grid[x, y].State = true;
+                            grid[x, y].SetColor(activeColor);
+                        }
+                    }
+                }
+            }
+        }
+
+        System.Func<int, int, bool> GetEvaluator()
+        {
+            //setup evaluator
+            if(checkType == CheckType.VerticalCross)
+                return CardinalCheck;
+            else if(checkType == CheckType.Full8Directional)
+                return FullCheck;
+            return DiagonalCheck;
+
+        }
+
+#if UNITY_EDITOR
+        public bool CardinalCheck(int x, int y)
+#else
+        bool CardinalCheck(int x, int y)
+#endif
+        {
+            if(x > 0)
+                if(!grid[x-1, y].State)
+                    return false;
+            if(x < gridSize.x-1)
+                if(!grid[x+1, y].State)
+                    return false;
+
+            if(y > 0)
+                if(!grid[x, y-1].State)
+                    return false;
+            if(y < gridSize.y-1)
+                if(!grid[x, y+1].State)
+                    return false;
+            return true;
+        }
+        
+#if UNITY_EDITOR
+        public bool FullCheck(int x, int y)
+#else
+        bool FullCheck(int x, int y)
+#endif
+        {
+            for(int dx = x-1; dx <= x+1; dx ++)
+            {
+                if(dx < 0 || dx >= gridSize.x)
+                    continue;
+                for(int dy = y-1; dy <= y+1; dy++)
+                {
+                    if(dy < 0 || dy >= gridSize.y)
+                        continue;
+                    if(dx == x && dy == y)
+                        continue;
+                    if(!grid[dx, dy].State)
+                        return false;
+                }
+            }
+            return true;
+        }
+        
+#if UNITY_EDITOR
+        public bool DiagonalCheck(int x, int y)
+#else
+        bool DiagonalCheck(int x, int y)
+#endif
+        {
+            if(x > 0)
+            {
+                if(y > 0)
+                {
+                    if(!grid[x - 1, y -1 ].State)
+                        return false;
+                }
+                if(y < gridSize.y - 1)
+                {
+                    if(!grid[x - 1, y + 1].State)
+                        return false;
+                }
+            }
+            if(x < gridSize.x - 1)
+            {
+                if(y > 0)
+                {
+                    if(!grid[x + 1, y - 1].State)
+                        return false;
+                }
+                if(y < gridSize.y - 1)
+                {
+                    if(!grid[x + 1, y + 1].State)
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        public enum CheckType 
+        {
+            Full8Directional, DiagonalCross, VerticalCross
         }
     }
 }

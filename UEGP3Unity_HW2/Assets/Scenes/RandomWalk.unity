@@ -249,7 +249,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: fd9a82af92689e84db82793ea9d70de0, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -306,12 +306,14 @@ MonoBehaviour:
   targetPercentFill: 0.34
   tilePrefab: {fileID: 1338543003}
   tileHolder: {fileID: 1829026689}
-  generationFrameRate: 476
-  activeColor: {r: 0, g: 0, b: 0, a: 1}
-  inactiveColor: {r: 1, g: 1, b: 1, a: 1}
+  generationFrameRate: 5196
+  activeColor: {r: 1, g: 1, b: 1, a: 1}
+  inactiveColor: {r: 0, g: 0, b: 0, a: 1}
   tColor: {r: 1, g: 0, b: 0, a: 1}
   useCustomSeed: 1
   seed: 3578
+  fillHoles: 0
+  checkType: 2
 --- !u!4 &1563339323
 Transform:
   m_ObjectHideFlags: 0

@@ -303,13 +303,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridSize: {x: 100, y: 100}
-  targetPercentFill: 0.4
+  targetPercentFill: 0.34
   tilePrefab: {fileID: 1338543003}
   tileHolder: {fileID: 1829026689}
-  generationFrameRate: 1
+  generationFrameRate: 476
   activeColor: {r: 0, g: 0, b: 0, a: 1}
   inactiveColor: {r: 1, g: 1, b: 1, a: 1}
   tColor: {r: 1, g: 0, b: 0, a: 1}
+  useCustomSeed: 1
+  seed: 3578
 --- !u!4 &1563339323
 Transform:
   m_ObjectHideFlags: 0

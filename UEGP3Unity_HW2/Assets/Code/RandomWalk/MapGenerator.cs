@@ -21,6 +21,10 @@ namespace UEGP3.RandomWalk
         protected Color activeColor, inactiveColor;
         [SerializeField]
         protected Color tColor = Color.red;
+        [SerializeField]
+        protected bool useCustomSeed = false;
+        [SerializeField]
+        protected int seed;
 
         int filledTiles = 0;
         Vector2Int tPosition;
@@ -64,7 +68,7 @@ namespace UEGP3.RandomWalk
         IEnumerator DoSteps()
         {
             //init random.
-            Random rng = new Random();
+            Random rng = useCustomSeed ? new Random(seed) : new Random();
             //initialize player position
             tPosition = new Vector2Int(rng.Next(0,gridSize.x), rng.Next(0, gridSize.y));
             float simulationTime = Time.time;

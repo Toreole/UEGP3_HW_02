@@ -8,6 +8,8 @@ namespace UEGP3.CustomPlayables
 {
     public class PlayerControlBehaviour : PlayableBehaviour
     {
+        // TODO
+        // public variables should be in UpperCamelCase
         public bool allowInput = false;
     }
 }

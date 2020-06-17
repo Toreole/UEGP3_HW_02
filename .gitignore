@@ -21,6 +21,7 @@ UEGP3Unity_HW2/[Mm]emoryCaptures/
 
 # Visual Studio cache directory
 .vs/
+.vscode/
 
 # Gradle cache directory
 .gradle/

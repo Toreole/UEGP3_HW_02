@@ -9,13 +9,13 @@ namespace UEGP3.RandomWalk
     public class MapGenerator : MonoBehaviour
     {
         [SerializeField]
-        Vector2Int gridSize;
+        protected Vector2Int gridSize;
         [SerializeField, Range(0.01f, 0.99f)]
-        float targetPercentFill;
+        protected float targetPercentFill;
         [SerializeField]
-        GameObject tilePrefab;
+        protected GameObject tilePrefab;
         [SerializeField]
-        Transform tileHolder;
+        protected Transform tileHolder;
         [SerializeField, Range(1, 10000)]
         protected float generationFrameRate = 60;
         [SerializeField]
@@ -164,6 +164,7 @@ namespace UEGP3.RandomWalk
             }
         }
 
+        //Gets the "is this tile a hole" evaluator for the set checkType.
         System.Func<int, int, bool> GetEvaluator()
         {
             //setup evaluator

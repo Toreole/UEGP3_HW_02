@@ -303,10 +303,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridSize: {x: 100, y: 100}
-  targetPercentFill: 0.34
+  targetPercentFill: 0.278
   tilePrefab: {fileID: 1338543003}
   tileHolder: {fileID: 1829026689}
-  generationFrameRate: 2293
+  generationFrameRate: 6767
   activeColor: {r: 1, g: 1, b: 1, a: 1}
   inactiveColor: {r: 0, g: 0, b: 0, a: 1}
   tColor: {r: 1, g: 0, b: 0, a: 1}
@@ -314,8 +314,8 @@ MonoBehaviour:
   seed: 3578
   fillHoles: 0
   checkType: 2
-  flightChance: 0.005
-  flightDistance: {x: 5, y: 20}
+  flightChance: 0.004
+  flightDistance: {x: 8, y: 40}
 --- !u!4 &1563339323
 Transform:
   m_ObjectHideFlags: 0

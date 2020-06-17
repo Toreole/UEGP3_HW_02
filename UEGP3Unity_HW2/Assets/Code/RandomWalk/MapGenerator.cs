@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Random = System.Random;
+using UEGP3.Core;
 
 namespace UEGP3.RandomWalk
 {
@@ -29,6 +30,10 @@ namespace UEGP3.RandomWalk
         protected bool fillHoles = false;
         [SerializeField]
         protected CheckType checkType = CheckType.Full8Directional;
+        [SerializeField]
+        protected float flightChance = 0.05f;
+        [SerializeField]
+        protected Vector2Int flightDistance;
 
         int filledTiles = 0;
         Vector2Int tPosition;
@@ -52,6 +57,7 @@ namespace UEGP3.RandomWalk
             tPosition = Vector2Int.zero;
         }
 
+        //YO: This could be done with a single Texture2D / one Sprite, which would be much more optimized.
         public void Generate()
         {
             //set up grid.
@@ -75,25 +81,45 @@ namespace UEGP3.RandomWalk
         {
             //init random.
             Random rng = useCustomSeed ? new Random(seed) : new Random();
+            Random flightRng = useCustomSeed ? new Random(seed) : new Random();
+            
             //initialize player position
             tPosition = new Vector2Int(rng.Next(0,gridSize.x), rng.Next(0, gridSize.y));
             float simulationTime = Time.time;
+            Vector2Int direction = new Vector2Int(0, 0);
             while(!IsDone)
             {
                 //update last tile.
                 var tile = grid[tPosition.x, tPosition.y];
                 tile.SetColor(tile.State? activeColor : inactiveColor);
 
-                //Step.
-                var dir = rng.Next(0, 4);
-                if(dir == 0)
-                    tPosition.x++;
-                else if(dir == 1)
-                    tPosition.y ++;
-                else if(dir == 2)
-                    tPosition.x--;
-                else
-                    tPosition.y--;
+                if(flightRng.NextDouble() < flightChance)
+                {
+                    //random angle between 0 and 360.
+                    float angle = (float)flightRng.NextDouble() * 360f;
+                    //distance of the flight
+                    int distance = flightRng.Next(flightDistance.x, flightDistance.y);
+                    //Create vector. 
+                    Vector2 flight = Quaternion.AngleAxis(angle, Vector3.forward) * Vector3.up;
+                    flight *= distance;
+                    //move the tunnler.
+                    tPosition += new Vector2Int((int)flight.x, (int)flight.y);;
+                }
+                else 
+                {
+                    //Step.
+                    var dir = rng.Next(0, 4);
+                    //dir = 0 and dir = 1 will not change the direction.
+                    if(dir == 0)
+                        tPosition.x++;
+                    else if(dir == 1)
+                        tPosition.y++;
+                    else if(dir == 2)
+                        tPosition.x--;
+                    else
+                        tPosition.y--;
+                }
+
                 tPosition.x = Mathf.Clamp(tPosition.x, 0, gridSize.x -1);
                 tPosition.y = Mathf.Clamp(tPosition.y, 0, gridSize.y -1);
 

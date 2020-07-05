@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+// TODO namespace wrong, should be Editor
 namespace UEGP3.RandomWalk.Edit
 {
     [CustomEditor(typeof(MapGenerator))]

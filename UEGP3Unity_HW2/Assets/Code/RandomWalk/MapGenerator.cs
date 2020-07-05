@@ -18,8 +18,11 @@ namespace UEGP3.RandomWalk
         protected Transform tileHolder;
         [SerializeField, Range(1, 10000)]
         protected float generationFrameRate = 60;
+        // TODO member declaration should be done one per line for readability. especially if directly below you create another one of the same type.
+        // you could have even assigned a default value to tColor in the same line, which makes it even less consequent.
         [SerializeField]
         protected Color activeColor, inactiveColor;
+        // TODO favor longer, descriptive names over shorter cryptic ones (what does t stand for? time? tile? temperature?)
         [SerializeField]
         protected Color tColor = Color.red;
         [SerializeField]
@@ -35,11 +38,13 @@ namespace UEGP3.RandomWalk
         [SerializeField]
         protected Vector2Int flightDistance;
 
+        // TODO we should always implicitly state access modifiers for better readability
         int filledTiles = 0;
         Vector2Int tPosition;
         Tile[,] grid;
         int totalTiles;
 
+        // TODO could be optimized by calculating totalTiles * targetPercentFill once and using that value instead
         public bool IsDone => filledTiles >= totalTiles * targetPercentFill;
 
         private void Start() 
@@ -47,6 +52,7 @@ namespace UEGP3.RandomWalk
             Generate();
         }
 
+        // TODO dead/unused code
         public void Clear()
         {
             foreach(var tile in grid)
@@ -57,6 +63,7 @@ namespace UEGP3.RandomWalk
             tPosition = Vector2Int.zero;
         }
 
+        // TODO theres a lot of room for optimization but thats not relevant for the general understanding of the algorithm :)
         //YO: This could be done with a single Texture2D / one Sprite, which would be much more optimized.
         public void Generate()
         {
@@ -70,6 +77,7 @@ namespace UEGP3.RandomWalk
                 {
                     var inst = Instantiate(tilePrefab, Vector3.zero, Quaternion.identity, tileHolder);
                     inst.transform.localPosition = new Vector3(x, y);
+                    // TODO could spare this get component call if we stored tilePrefab directly as a SpriteRenderer
                     Tile t = new Tile(inst.GetComponent<SpriteRenderer>());
                     grid[x, y] = t;
                 }
@@ -86,6 +94,7 @@ namespace UEGP3.RandomWalk
             //initialize player position
             tPosition = new Vector2Int(rng.Next(0,gridSize.x), rng.Next(0, gridSize.y));
             float simulationTime = Time.time;
+            // TODO unused variable
             Vector2Int direction = new Vector2Int(0, 0);
             while(!IsDone)
             {
@@ -93,6 +102,7 @@ namespace UEGP3.RandomWalk
                 var tile = grid[tPosition.x, tPosition.y];
                 tile.SetColor(tile.State? activeColor : inactiveColor);
 
+                // TODO for better readability/code quality the code executed in both branches should be refactored to methods (DoLevyFlight/DoNormalStep or something similar)
                 if(flightRng.NextDouble() < flightChance)
                 {
                     //random angle between 0 and 360.
@@ -138,6 +148,7 @@ namespace UEGP3.RandomWalk
                 FillHoles(GetEvaluator());
         }
 
+        // TODO i get the intent but in all honesty this just reduces readability of the code (same for other methods below)
         //Fills all 1x1 holes in the generation, looks very smooth.
         #if UNITY_EDITOR
         public void FillHoles(System.Func<int, int, bool> evaluator)
@@ -164,6 +175,8 @@ namespace UEGP3.RandomWalk
             }
         }
 
+        // TODO this could/should easily be its own class, for proper encapsulation and compliance with SOLID, OCP + SRP
+        // TODO Naming: it is not quite clear what is being evaluated.
         //Gets the "is this tile a hole" evaluator for the set checkType.
         System.Func<int, int, bool> GetEvaluator()
         {
@@ -176,12 +189,16 @@ namespace UEGP3.RandomWalk
 
         }
 
+        // TODO Naming: It is not quite clear what is being checked, applies to all three check methods.
 #if UNITY_EDITOR
         public bool CardinalCheck(int x, int y)
 #else
         bool CardinalCheck(int x, int y)
 #endif
         {
+            // TODO code formatting: no spaces between if and paranthesis, no spaces between variables in paranthesis, inner + outer if statements can be merged
+            // TODO code can be improved greatly by introducing a IsInBounds(x, y) method, then locally storing each value and returning the && result of each variable
+            // TODO while this does potentially perform more checks than necessary, it does greatly improve quality in terms of readability. And I doubt the "overhead" is noticeable.
             if(x > 0)
                 if(!grid[x-1, y].State)
                     return false;
@@ -204,14 +221,19 @@ namespace UEGP3.RandomWalk
         bool FullCheck(int x, int y)
 #endif
         {
+            // TODO naming: favor more descriptive names over shorter ones. 
+            // TODO usually dx/dy a
             for(int dx = x-1; dx <= x+1; dx ++)
             {
+                // TODO here again, a IsInBounds method would help
                 if(dx < 0 || dx >= gridSize.x)
                     continue;
                 for(int dy = y-1; dy <= y+1; dy++)
                 {
+                    // TODO here again, a IsInBounds method would help
                     if(dy < 0 || dy >= gridSize.y)
                         continue;
+                    // TODO could join the two if statements
                     if(dx == x && dy == y)
                         continue;
                     if(!grid[dx, dy].State)
@@ -221,6 +243,9 @@ namespace UEGP3.RandomWalk
             return true;
         }
         
+        // TODO essentially the same as I already said in the two methods above applies here as well. 
+        // TODO generally these three methods contain a lot of nesting that is hard to follow/comprehend. Of course the logic itself is quite easy
+        // TODO but all the nesting already greatly impacts readability and hence quality. the sometimes poor formatting makes this even worse.
 #if UNITY_EDITOR
         public bool DiagonalCheck(int x, int y)
 #else
